@@ -22,15 +22,15 @@ struct pnode {
 
 /* not on the slides: value of the polynomial (as in the lecture notes) */
 // P: list starting with a VAR node; d['x'-'x'], d['y'-'x'], d['z'-'x']: variable values
-long poly_eval(poly_pointer P, const long d[]) {
+long poly_value(poly_pointer P, const long d[]) {
     long sum = 0, v = d[P->var - 'x'];  // value of this level's variable
-    long coef, power;
+    long coef, pw;
     int k;
     for (poly_pointer p = P->link; p; p = p->link) {
-        coef = (p->tag == PTR) ? poly_eval(p->dlink, d)  // coefficient is a list
+        coef = (p->tag == PTR) ? poly_value(p->dlink, d)  // coefficient is a list
                                : p->coef;                // NO: integer
-        for (power = 1, k = 0; k < p->exp; k++) power *= v;
-        sum += coef * power;
+        for (pw = 1, k = 0; k < p->exp; k++) pw *= v;
+        sum += coef * pw;
     }
     return sum;
 }
@@ -104,11 +104,11 @@ int main(void)
     Y2 = new_var('y', new_ptr(X3, 4, new_no(2, 1, NULL)));
     P  = new_var('z', new_ptr(Y1, 2, new_ptr(Y2, 1, NULL)));
 
-    printf("3x^2y: %d nodes, value = %ld\n", poly_count(T), poly_eval(T, d));
+    printf("3x^2y: %d nodes, value = %ld\n", poly_count(T), poly_value(T, d));
     printf("P: %d nodes\n", poly_count(P));
-    printf("coefficient of z^2 = %ld\n", poly_eval(Y1, d));
-    printf("coefficient of z = %ld\n", poly_eval(Y2, d));
-    printf("P(2, 3, 1) = %ld\n", poly_eval(P, d));
+    printf("coefficient of z^2 = %ld\n", poly_value(Y1, d));
+    printf("coefficient of z = %ld\n", poly_value(Y2, d));
+    printf("P(2, 3, 1) = %ld\n", poly_value(P, d));
 
     poly_free(T);
     poly_free(P);

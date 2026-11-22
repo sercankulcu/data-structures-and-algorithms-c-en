@@ -18,12 +18,12 @@ struct dnode {
 };
 // invariant: p == p->llink->rlink == p->rlink->llink
 
-// inserts temp to the right of node p
-void dinsert(dnode_ptr p, dnode_ptr temp) {
-    temp->llink = p;
-    temp->rlink = p->rlink;
-    p->rlink->llink = temp;
-    p->rlink = temp;
+// inserts fresh to the right of node p
+void dinsert(dnode_ptr p, dnode_ptr fresh) {
+    fresh->llink = p;
+    fresh->rlink = p->rlink;
+    p->rlink->llink = fresh;
+    p->rlink = fresh;
 }
 
 void ddelete(dnode_ptr header, dnode_ptr p) {

@@ -11,7 +11,7 @@
 #define INF 1000
 
 /* not on the slides: function header from the notes */
-void floyd(int cost[][MAX_VERTICES], int A[][MAX_VERTICES], int n)
+void Floyd(int cost[][MAX_VERTICES], int A[][MAX_VERTICES], int n)
 {
     int i, j, k;
     for (i = 0; i < n; i++)
@@ -52,10 +52,10 @@ int main(void)
         {1000, 1000, 1000,   3, 1000,    0}};
     int A[MAX_VERTICES][MAX_VERTICES];
 
-    floyd(three, A, 3);
+    Floyd(three, A, 3);
     printf("three vertices:\n");
     print_matrix(A, 3);
-    floyd(six, A, 6);
+    Floyd(six, A, 6);
     printf("six vertices:\n");
     print_matrix(A, 6);
     return 0;

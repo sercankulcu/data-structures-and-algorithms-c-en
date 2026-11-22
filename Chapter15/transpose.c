@@ -15,13 +15,13 @@ node_ptr graph[MAX_V];   /* one list per vertex */
 
 /* not on the slides: insert from the notes (add_edge working on any array
  * of list heads) */
-void insert(node_ptr head[], int u, int v)   /* v into the list head[u] */
+void insert(node_ptr adj[], int u, int v)   /* v into the list adj[u] */
 {
     node_ptr p = malloc(sizeof(node));
     if (p == NULL) exit(1);
     p->vertex = v;
-    p->link = head[u];
-    head[u] = p;
+    p->link = adj[u];
+    adj[u] = p;
 }
 
 void transpose(node_ptr adj[], node_ptr rev[],
@@ -36,27 +36,27 @@ void transpose(node_ptr adj[], node_ptr rev[],
 }
 
 /* not on the slides: free_lists from the notes */
-void free_lists(node_ptr head[], int n)
+void free_lists(node_ptr adj[], int n)
 {
     int i;
     node_ptr p;
     for (i = 0; i < n; i++) {
-        while (head[i]) {
-            p = head[i];
-            head[i] = p->link;   /* save link before freeing */
+        while (adj[i]) {
+            p = adj[i];
+            adj[i] = p->link;   /* save link before freeing */
             free(p);
         }
     }
 }
 
 /* not on the slides: prints the lists */
-static void print_lists(const char *name, node_ptr head[], int n)
+static void print_lists(const char *name, node_ptr adj[], int n)
 {
     int i;
     node_ptr p;
     for (i = 0; i < n; i++) {
         printf("%s[%d]:", name, i);
-        for (p = head[i]; p; p = p->link)
+        for (p = adj[i]; p; p = p->link)
             printf(" %d", p->vertex);
         printf("\n");
     }

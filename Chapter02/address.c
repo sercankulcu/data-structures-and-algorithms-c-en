@@ -1,12 +1,12 @@
 /* Byte address of an element of a two-dimensional array in row-major
- * order: alpha + (i * u1 + j) * s. Slide: "address() Step by Step".
+ * order: alpha + (i * dim1 + j) * s. Slide: "address() Step by Step".
  * int x[3][4], alpha = 100, s = 4: x[1][2] -> 124, x[2][3] -> 144. */
 #include <stdio.h>  /* not on the slides */
 
 /* int x[3][4]: row-major byte address */
 long address(long alpha, int i, int j,
-             int u1, int s) {
-  long k = (long)i * u1 + j;   /* elements before */
+             int dim1, int s) {
+  long k = (long)i * dim1 + j;   /* elements before */
   return alpha + k * s;
 }
 

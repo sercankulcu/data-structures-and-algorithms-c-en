@@ -1,5 +1,5 @@
 /* Singly linked list: traversal (print_list) and insertion at the front
- * (insert_front). 2, then 7 are inserted into an empty list (7 -> 2); then, as
+ * (push_front). 2, then 7 are inserted into an empty list (7 -> 2); then, as
  * in the trace in the notes, 5 (5 -> 7 -> 2).
  * Slides: "A Node: A Self-Referential struct", "Inserting at the Front, and
  * Passing by Address". */
@@ -20,12 +20,12 @@ void print_list(node_ptr p) {
     printf("\n");
 }
 
-bool insert_front(node_ptr *head, int x) {
-    node_ptr temp = malloc(sizeof *temp);
-    if (temp == NULL) return false;  // no memory
-    temp->data = x;
-    temp->link = *head;    // first keep the old head
-    *head = temp;         // then move the head
+bool push_front(node_ptr *head, int x) {
+    node_ptr fresh = malloc(sizeof *fresh);
+    if (fresh == NULL) return false;  // no memory
+    fresh->data = x;
+    fresh->link = *head;    // first keep the old head
+    *head = fresh;         // then move the head
     return true;
 }
 
@@ -41,11 +41,11 @@ static void clear_list(node_ptr *list) {
 int main(void)
 {
     node_ptr list = NULL;  // empty list
-    insert_front(&list, 2);   // 2
+    push_front(&list, 2);   // 2
     print_list(list);
-    insert_front(&list, 7);   // 7 -> 2
+    push_front(&list, 7);   // 7 -> 2
     print_list(list);
-    insert_front(&list, 5);   /* not on the slides: the trace from the notes, 5 -> 7 -> 2 */
+    push_front(&list, 5);   /* not on the slides: the trace from the notes, 5 -> 7 -> 2 */
     print_list(list);
     clear_list(&list);   /* not on the slides */
     return 0;

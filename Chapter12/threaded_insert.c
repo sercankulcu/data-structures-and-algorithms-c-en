@@ -110,7 +110,7 @@ void insert_left(thread_ptr parent, thread_ptr child) {
 }
 
 /* not on the slides: reverse inorder traversal (predecessor to predecessor) */
-static void reverse_inorder(thread_ptr L) {
+static void reverse_tinorder(thread_ptr L) {
     thread_ptr p = L;
     for (;;) {
         p = inpred(p);
@@ -135,7 +135,7 @@ static void show(const char *title, thread_ptr L) {
     printf("%s\n  inorder:  ", title);
     tinorder(L);
     printf("\n  reverse:  ");
-    reverse_inorder(L);
+    reverse_tinorder(L);
     printf("\n");
 }
 

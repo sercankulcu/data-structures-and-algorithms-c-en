@@ -14,13 +14,13 @@ struct node {
 };
 
 // sorted insert in a header list: no special case
-void h_insert_sorted(node_ptr header, node_ptr temp) {
+void h_sorted_insert(node_ptr header, node_ptr fresh) {
     node_ptr prev = header;       // never NULL
     while (prev->link != NULL &&
-           prev->link->data < temp->data)
+           prev->link->data < fresh->data)
         prev = prev->link;
-    temp->link = prev->link;
-    prev->link = temp;
+    fresh->link = prev->link;
+    prev->link = fresh;
 }
 
 /* not on the slides: allocates a node */
@@ -45,7 +45,7 @@ int main(void)
     int input[] = {8, 3, 5, 1, 9};
     node_ptr p, q;
     for (int i = 0; i < 5; i++) {
-        h_insert_sorted(&H, new_node(input[i]));
+        h_sorted_insert(&H, new_node(input[i]));
         printf("%d inserted: ", input[i]);
         print_list(H.link);                      /* the real nodes follow the header */
     }

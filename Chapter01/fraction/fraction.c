@@ -1,7 +1,7 @@
 /* Implementation of the Fraction ADT: struct fraction is defined only in
  * this file. Slides: "Abstraction in C: the Header File" (fraction_create)
  * and "Using the Interface" (fraction_add, fraction_equal, fraction_print,
- * fraction_free). */
+ * fraction_delete). */
 /* fraction.c : implementation (HOW?) */
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,4 +34,4 @@ int fraction_equal(const Fraction *a,
 void fraction_print(const Fraction *f) {
   printf("%d/%d\n", f->num, f->den);
 }
-void fraction_free(Fraction *f) { free(f); }
+void fraction_delete(Fraction *f) { free(f); }

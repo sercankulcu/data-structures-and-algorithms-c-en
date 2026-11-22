@@ -14,7 +14,7 @@ struct node {
 
 // deletes the node after prev from the list and
 // from memory
-void delete_next(node_ptr prev) {
+void delete_after(node_ptr prev) {
     node_ptr victim = prev->link; // keep the address
     if (victim == NULL) return; // nothing to delete
     prev->link = victim->link;  // fix the link
@@ -56,9 +56,9 @@ int main(void)
     int a[] = {5, 3, 8, 2};
     node_ptr list = build_list(a, 4);
     print_list(list);
-    delete_next(list->link);            /* the one after 3: 8 */
+    delete_after(list->link);            /* the one after 3: 8 */
     print_list(list);
-    delete_next(list->link->link);       /* 2 is the last node: nothing to delete */
+    delete_after(list->link->link);       /* 2 is the last node: nothing to delete */
     print_list(list);
     clear_list(&list);
     return 0;

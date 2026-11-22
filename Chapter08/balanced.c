@@ -10,10 +10,10 @@
 #define MAX 100       /* not on the slides */
 
 /* not on the slides: matches (as in the lecture notes) */
-bool matches(char open, char close) {
-  return (open == '(' && close == ')') ||
-         (open == '[' && close == ']') ||
-         (open == '{' && close == '}');
+bool matches(char opener, char closer) {
+  return (opener == '(' && closer == ')') ||
+         (opener == '[' && closer == ']') ||
+         (opener == '{' && closer == '}');
 }
 
 bool balanced(const char *e) {
@@ -27,7 +27,7 @@ bool balanced(const char *e) {
       top--;
     }
   }
-  return top == -1;       /* none left open? */
+  return top == -1;       /* none left opener? */
 }
 
 int main(void)

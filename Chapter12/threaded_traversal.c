@@ -112,7 +112,7 @@ void insert_left(thread_ptr parent, thread_ptr child) {
 }
 
 /* not on the slides: reverse inorder traversal (predecessor to predecessor) */
-static void reverse_inorder(thread_ptr L) {
+static void reverse_tinorder(thread_ptr L) {
     thread_ptr p = L;
     for (;;) {
         p = inpred(p);
@@ -163,7 +163,7 @@ int main(void)
     printf("\npreorder: ");
     tpreorder(L);
     printf("\nreverse inorder: ");
-    reverse_inorder(L);
+    reverse_tinorder(L);
     printf("\n");
 
     threaded_tree_free(L);

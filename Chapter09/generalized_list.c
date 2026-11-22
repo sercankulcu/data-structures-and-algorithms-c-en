@@ -62,11 +62,11 @@ list_pointer parse(const char **s) {
 }
 
 /* not on the slides: frees an unshared list (as in the lecture notes) */
-void list_clear(list_pointer L) {
+void free_list(list_pointer L) {
     list_pointer q;
     while (L) {
         if (L->tag)
-            list_clear(L->dlink);       // the sublist first
+            free_list(L->dlink);       // the sublist first
         q = L;
         L = L->link;                    // read link before free
         free(q);
@@ -262,8 +262,8 @@ int main(void)
     print_linear(K);
     printf("\nequal(L, copy) = %d, same(L, copy) = %d\n",
            equal(L, K), same(L, K));
-    list_clear(L);
-    list_clear(K);
+    free_list(L);
+    free_list(K);
 
     /* equal and same */
     T = read_list("(a,(b,c))");
@@ -272,27 +272,27 @@ int main(void)
            equal(T, U), same(T, U));
     printf("equal((), ()) = %d, same = %d\n",
            equal(NULL, NULL), same(NULL, NULL));
-    list_clear(T);
-    list_clear(U);
+    free_list(T);
+    free_list(U);
 
     /* print_atoms */
     L = read_list("(a,(b),c)");
     printf("print_atoms((a,(b),c)): ");
     print_atoms(L);
     printf("\n");
-    list_clear(L);
+    free_list(L);
     L = read_list(trees[0]);
     printf("print_atoms(tree list): ");
     print_atoms(L);
     printf("\n");
-    list_clear(L);
+    free_list(L);
 
     /* depth and iter_depth */
     for (i = 0; i < 7; i++) {
         L = read_list(deep[i]);
         printf("depth %s = %d, iter_depth = %d\n",
                deep[i], depth(L), iter_depth(L));
-        list_clear(L);
+        free_list(L);
     }
 
     /* invert */
@@ -302,7 +302,7 @@ int main(void)
         printf("invert %s -> ", inverted[i]);
         print_linear(L);
         printf("\n");
-        list_clear(L);
+        free_list(L);
     }
 
     /* print_tree */
@@ -311,7 +311,7 @@ int main(void)
         printf("print_tree: ");
         print_tree(L);
         printf("\n");
-        list_clear(L);
+        free_list(L);
     }
     return 0;
 }

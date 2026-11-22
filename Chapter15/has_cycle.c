@@ -53,14 +53,14 @@ static void build_lists(const int k[][2], int e)
 }
 
 /* not on the slides: free_lists from the notes */
-void free_lists(node_ptr head[], int n)
+void free_lists(node_ptr adj[], int n)
 {
     int i;
     node_ptr p;
     for (i = 0; i < n; i++) {
-        while (head[i]) {
-            p = head[i];
-            head[i] = p->link;   /* save link before freeing */
+        while (adj[i]) {
+            p = adj[i];
+            adj[i] = p->link;   /* save link before freeing */
             free(p);
         }
     }

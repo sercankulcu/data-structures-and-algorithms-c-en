@@ -53,11 +53,11 @@ list_pointer parse(const char **s) {
 }
 
 /* not on the slides: frees the list */
-void list_clear(list_pointer L) {
+void free_list(list_pointer L) {
     list_pointer q;
     while (L) {
         if (L->tag)
-            list_clear(L->dlink);
+            free_list(L->dlink);
         q = L;
         L = L->link;
         free(q);
@@ -114,7 +114,7 @@ int main(void)
         printf(" -> %d, counts:", n);
         print_counts(L);
         printf("\n");
-        list_clear(L);
+        free_list(L);
     }
     return 0;
 }

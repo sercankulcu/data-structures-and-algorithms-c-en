@@ -12,20 +12,20 @@
 typedef struct {
     int u, v, w;        /* edge <u,v>, weight w */
 } edge;
-int bellman_ford(edge E[], int n, int e, int s, int d[])
+int BellmanFord(edge edges[], int n, int e, int s, int d[])
 {
     int i, j, t, u, v;
     for (i = 0; i < n; i++) d[i] = INF;
     d[s] = 0;
     for (t = 1; t <= n - 1; t++)          /* n-1 rounds */
         for (j = 0; j < e; j++) {
-            u = E[j].u;  v = E[j].v;
-            if (d[u] != INF && d[u] + E[j].w < d[v])
-                d[v] = d[u] + E[j].w;
+            u = edges[j].u;  v = edges[j].v;
+            if (d[u] != INF && d[u] + edges[j].w < d[v])
+                d[v] = d[u] + edges[j].w;
         }
     for (j = 0; j < e; j++)               /* round n */
-        if (d[E[j].u] != INF &&
-            d[E[j].u] + E[j].w < d[E[j].v]) return -1;
+        if (d[edges[j].u] != INF &&
+            d[edges[j].u] + edges[j].w < d[edges[j].v]) return -1;
     return 0;              /* -1: negative cycle */
 }
 
@@ -35,12 +35,12 @@ int main(void)
     edge E2[] = { {0, 1, 1}, {1, 2, 2}, {2, 1, -3} };
     int d[4], i, r;
 
-    r = bellman_ford(E1, 4, 4, 0, d);
+    r = BellmanFord(E1, 4, 4, 0, d);
     printf("example: result = %d, d =", r);
     for (i = 0; i < 4; i++) printf(" %d", d[i]);
     printf("\n");
 
-    r = bellman_ford(E2, 3, 3, 0, d);
+    r = BellmanFord(E2, 3, 3, 0, d);
     printf("negative cycle: result = %d\n", r);
     return 0;
 }

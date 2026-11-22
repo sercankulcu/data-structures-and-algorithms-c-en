@@ -11,8 +11,8 @@
 #include <stdio.h>
 #include <stdlib.h>   /* not on the slides: malloc, free, exit */
 
-typedef struct node *tree_pointer;
-struct node {
+typedef struct tree *tree_pointer;
+struct tree {
     tree_pointer left_child;  /* left subtree */
     char         data;
     tree_pointer right_child; /* right subtree */

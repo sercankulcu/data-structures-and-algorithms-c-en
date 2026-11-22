@@ -1,11 +1,11 @@
 /* Dijkstra (shortest_path): in every round the nearest unmarked vertex
- * (choose) is finalized and its neighbors are relaxed; pred[] holds the
+ * (min_vertex) is finalized and its neighbors are relaxed; pred[] holds the
  * shortest-path tree, print_path writes the path recursively from the source
  * to the target. Cost matrix, O(n^2).
  * Example from the notes: the 6-vertex graph (Horowitz-Sahni). Source 0:
  * 2 -> 10, 3 -> 25, 1 -> 45, 4 -> 45, no path to 5. Source 2: 0 -> 20,
  * 3 -> 15, 1 -> 35, 4 -> 45.
- * Slides: "C Code: The Cost Matrix and choose", "shortest_path(): The Main
+ * Slides: "C Code: The Cost Matrix and min_vertex", "shortest_path(): The Main
  * Function", "Code Trace: ...", "Finding the Path: The Predecessor Array". */
 #include <stdio.h>
 #include <limits.h>
@@ -20,7 +20,7 @@ int cost[][MAX_VERTICES] = {
     {1000,   20, 1000,   0,   35, 1000},
     {1000, 1000, 1000,  30,    0, 1000},   /* missing row */
     {1000, 1000, 1000,   3, 1000,    0}};  /* 100 -> 1000 */
-int choose(int dist[], int n, short found[])
+int min_vertex(int dist[], int n, short found[])
 {
     int i, min = INT_MAX, pos = -1;
     for (i = 0; i < n; i++)
@@ -42,7 +42,7 @@ void shortest_path(int v, int cost[][MAX_VERTICES],
     }
     found[v] = TRUE;  dist[v] = 0;
     for (i = 2; i < n; i++) {        /* n-2 rounds */
-        u = choose(dist, n, found);
+        u = min_vertex(dist, n, found);
         if (u < 0) break;            /* none left */
         found[u] = TRUE;
         for (w = 0; w < n; w++)
@@ -54,31 +54,31 @@ void shortest_path(int v, int cost[][MAX_VERTICES],
     }
 }
 
-void print_path(int pred[], int s, int h)
+void print_path(int pred[], int s, int t)
 {
-    if (h == s) {
+    if (t == s) {
         printf("%d", s);
         return;
     }
-    print_path(pred, s, pred[h]);   /* pred first */
-    printf(" -> %d", h);
+    print_path(pred, s, pred[t]);   /* pred first */
+    printf(" -> %d", t);
 }
 
 /* not on the slides: prints all results for one source; pred[] is
  * meaningless for an unreachable vertex, so dist is checked first */
 static void print_result(int s)
 {
-    int dist[MAX_VERTICES], pred[MAX_VERTICES], h;
+    int dist[MAX_VERTICES], pred[MAX_VERTICES], t;
     short found[MAX_VERTICES];
     shortest_path(s, cost, dist, pred, MAX_VERTICES, found);
     printf("source %d:\n", s);
-    for (h = 0; h < MAX_VERTICES; h++) {
-        if (dist[h] >= INF) {
-            printf("  %d: no path\n", h);
+    for (t = 0; t < MAX_VERTICES; t++) {
+        if (dist[t] >= INF) {
+            printf("  %d: no path\n", t);
             continue;
         }
-        printf("  %d: %d  ", h, dist[h]);
-        print_path(pred, s, h);
+        printf("  %d: %d  ", t, dist[t]);
+        print_path(pred, s, t);
         printf("\n");
     }
 }

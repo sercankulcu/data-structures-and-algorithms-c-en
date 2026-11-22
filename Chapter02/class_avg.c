@@ -6,14 +6,14 @@
 typedef struct {
   int id;
   char name[16];
-  double gpa;
+  double avg;
 } Student;
 
 double class_avg(const Student s[], int n) {
   double sum = 0.0;
   int i;
   for (i = 0; i < n; i++)
-    sum += s[i].gpa;               /* field via . */
+    sum += s[i].avg;               /* field via . */
   return n > 0 ? sum / n : 0.0;    /* empty class */
 }
 

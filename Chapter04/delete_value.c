@@ -14,7 +14,7 @@ struct node {
     node_ptr link;
 };
 
-bool delete_key(node_ptr *head, int x) {
+bool delete_value(node_ptr *head, int x) {
     node_ptr prev = NULL, p = *head;
     while (p != NULL && p->data != x) {
         prev = p;
@@ -64,8 +64,8 @@ int main(void)
     node_ptr list = build_list(a, 4);
     print_list(list);
     for (int i = 0; i < 3; i++) {
-        bool result = delete_key(&list, targets[i]);
-        printf("delete_key(%d) = %s: ", targets[i], result ? "true" : "false");
+        bool result = delete_value(&list, targets[i]);
+        printf("delete_value(%d) = %s: ", targets[i], result ? "true" : "false");
         print_list(list);
     }
     clear_list(&list);
@@ -75,7 +75,7 @@ int main(void)
 /* Note: every line ends with a space. */
 /* Expected output:
  * 3 8 1 6
- * delete_key(1) = true: 3 8 6
- * delete_key(3) = true: 8 6
- * delete_key(42) = false: 8 6
+ * delete_value(1) = true: 3 8 6
+ * delete_value(3) = true: 8 6
+ * delete_value(42) = false: 8 6
  */

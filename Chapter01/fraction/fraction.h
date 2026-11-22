@@ -11,5 +11,5 @@ Fraction *fraction_add(const Fraction *a,
 int  fraction_equal(const Fraction *a,
                     const Fraction *b);
 void fraction_print(const Fraction *f);
-void fraction_free(Fraction *f);
+void fraction_delete(Fraction *f);
 #endif

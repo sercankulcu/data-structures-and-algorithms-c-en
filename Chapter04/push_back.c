@@ -13,15 +13,15 @@ struct node {
     node_ptr link;
 };
 
-bool insert_back(node_ptr *head, int x) {
-    node_ptr p, temp = malloc(sizeof *temp);
-    if (temp == NULL) return false;
-    temp->data = x;
-    temp->link = NULL;              // the new last node
-    if (*head == NULL) { *head = temp; return true; }
+bool push_back(node_ptr *head, int x) {
+    node_ptr p, fresh = malloc(sizeof *fresh);
+    if (fresh == NULL) return false;
+    fresh->data = x;
+    fresh->link = NULL;              // the new last node
+    if (*head == NULL) { *head = fresh; return true; }
     for (p = *head; p->link != NULL; p = p->link)
         ;                          // find the last node
-    p->link = temp;
+    p->link = fresh;
     return true;
 }
 
@@ -44,11 +44,11 @@ static void clear_list(node_ptr *list) {
 int main(void)
 {
     node_ptr list = NULL;
-    insert_back(&list, 4);          /* empty-list branch */
-    insert_back(&list, 1);
-    insert_back(&list, 6);
+    push_back(&list, 4);          /* empty-list branch */
+    push_back(&list, 1);
+    push_back(&list, 6);
     print_list(list);
-    insert_back(&list, 5);
+    push_back(&list, 5);
     print_list(list);
     clear_list(&list);
     return 0;

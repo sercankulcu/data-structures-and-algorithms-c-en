@@ -1,6 +1,6 @@
 /* Merge sort (mergesort) and two-ended merge (merge): the left half is copied
  * into b as it is, the right half is copied in reverse; each half becomes the
- * sentinel of the other. The auxiliary array b is allocated once (merge_sort
+ * sentinel of the other. The auxiliary array b is allocated once (merge_sort_alloc
  * in the notes). Examples from the notes: merge(a, b, 0, 2, 6) on
  * [3, 5, 7 | 4, 5, 6, 10] and mergesort on [89, 67, 59, 62, 23, 93, 24, 20,
  * 28, 60].
@@ -33,7 +33,7 @@ void mergesort(int a[], int b[], int L, int R) {
 }
 
 /* not on the slides: the wrapper from the notes, allocates b once */
-int merge_sort(int a[], int n) {
+int merge_sort_alloc(int a[], int n) {
     int *b = malloc(n * sizeof *b);   /* same size as a */
     if (b == NULL) return 0;          /* no memory: not sorted */
     mergesort(a, b, 0, n - 1);
@@ -56,7 +56,7 @@ int main(void) {   /* not on the slides */
     print_array("b:        ", b, 7);   /* after the copy: left ascending, right reversed */
 
     int c[] = {89, 67, 59, 62, 23, 93, 24, 20, 28, 60};
-    if (!merge_sort(c, 10)) return 1;
+    if (!merge_sort_alloc(c, 10)) return 1;
     print_array("mergesort:", c, 10);
     return 0;
 }

@@ -8,18 +8,18 @@
 int main(void) {
   Fraction *a = fraction_create(1, 2);
   Fraction *b = fraction_create(1, 3);
-  Fraction *s = NULL;
-  if (a && b) s = fraction_add(a, b);
-  if (s) fraction_print(s);  /* 5/6 */
-  fraction_free(a); fraction_free(b);
-  fraction_free(s);  /* free(NULL) is safe */
+  Fraction *t = NULL;
+  if (a && b) t = fraction_add(a, b);
+  if (t) fraction_print(t);  /* 5/6 */
+  fraction_delete(a); fraction_delete(b);
+  fraction_delete(t);  /* free(NULL) is safe */
 
   /* not on the slides: fraction_equal test (the 2/4 and 1/2 example from the notes) */
   {
     Fraction *c = fraction_create(2, 4);
     Fraction *d = fraction_create(1, 2);
     if (c && d) printf("2/4 == 1/2 ? %d\n", fraction_equal(c, d));
-    fraction_free(c); fraction_free(d);
+    fraction_delete(c); fraction_delete(d);
   }
   return 0;
 }

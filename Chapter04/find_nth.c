@@ -1,4 +1,4 @@
-/* Searching a linked list by value (search) and reaching a node by 0-based
+/* Searching a linked list by value (find) and reaching a node by 0-based
  * position (nth). Example from the notes: list 4 -> 1 -> 6 -> 5, positions 0, 3, 4.
  * Slide: "Searching and Reaching the i-Th Node". */
 #include <stdio.h>
@@ -11,7 +11,7 @@ struct node {
     node_ptr link;
 };
 
-node_ptr search(node_ptr p, int x) {
+node_ptr find(node_ptr p, int x) {
     while (p != NULL && p->data != x)
         p = p->link;
     return p;               // NULL if not found
@@ -56,8 +56,8 @@ int main(void)
 {
     int a[] = {4, 1, 6, 5};
     node_ptr list = build_list(a, 4);
-    show("search(list, 6)", search(list, 6));
-    show("search(list, 42)", search(list, 42));
+    show("find(list, 6)", find(list, 6));
+    show("find(list, 42)", find(list, 42));
     show("nth(list, 0)", nth(list, 0));
     show("nth(list, 3)", nth(list, 3));
     show("nth(list, 4)", nth(list, 4));
@@ -66,8 +66,8 @@ int main(void)
 }
 
 /* Expected output:
- * search(list, 6) -> 6
- * search(list, 42) -> NULL
+ * find(list, 6) -> 6
+ * find(list, 42) -> NULL
  * nth(list, 0) -> 4
  * nth(list, 3) -> 5
  * nth(list, 4) -> NULL

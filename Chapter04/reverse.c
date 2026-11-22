@@ -2,7 +2,7 @@
  * direction of the links changes (three pointers r, q, p). Example from the
  * notes: the list 10 -> 20 -> 30 becomes 30 -> 20 -> 10; a second application
  * restores the original; nothing happens on an empty list.
- * Slide: "The Same Job, Iteratively" (invert). */
+ * Slide: "The Same Job, Iteratively" (reverse). */
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -13,7 +13,7 @@ struct node {
     node_ptr link;
 };
 
-void invert(node_ptr *list) {
+void reverse(node_ptr *list) {
     node_ptr r, p = *list, q = NULL;
     while (p) {
         r = q;         // r trails q
@@ -60,11 +60,11 @@ int main(void)
     node_ptr list = build_list(a, 3);
     node_ptr empty = NULL;
     print_list(list);
-    invert(&list);
+    reverse(&list);
     print_list(list);
-    invert(&list);
+    reverse(&list);
     print_list(list);
-    invert(&empty);
+    reverse(&empty);
     printf("empty list: %s\n", empty == NULL ? "NULL" : "?");
     clear_list(&list);
     return 0;

@@ -11,8 +11,8 @@
 
 #define MAX_SIZE 100  /* not on the slides */
 
-typedef struct node *tree_pointer;
-struct node {
+typedef struct tree *tree_pointer;
+struct tree {
     tree_pointer left_child;  /* left subtree */
     char         data;
     tree_pointer right_child; /* right subtree */
@@ -36,19 +36,19 @@ void tree_free(tree_pointer L) {  /* postorder */
 }
 
 void push(int *top, tree_pointer p,
-          tree_pointer s[]) {
+          tree_pointer y[]) {
   if (*top == MAX_SIZE - 1) {
     fprintf(stderr, "Stack is full\n");
     exit(EXIT_FAILURE);
   }
-  s[++*top] = p;
+  y[++*top] = p;
 }
 tree_pointer pop(int *top,
-                 tree_pointer s[]) {
-  return (*top == -1) ? NULL : s[(*top)--];
+                 tree_pointer y[]) {
+  return (*top == -1) ? NULL : y[(*top)--];
 }
 
-void iter_inorder(tree_pointer L) {
+void inorder(tree_pointer L) {
   tree_pointer stack[MAX_SIZE];
   int top = -1;
   for (;;) {
@@ -139,7 +139,7 @@ static tree_pointer new_node(char data, tree_pointer left, tree_pointer right)
 static void try_all(const char *name, tree_pointer t)
 {
     printf("%s\n  inorder    : ", name);
-    iter_inorder(t);
+    inorder(t);
     printf("\n  preorder   : ");
     iter_preorder(t);
     printf("\n  preorder 2 : ");

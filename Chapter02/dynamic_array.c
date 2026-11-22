@@ -10,11 +10,11 @@ typedef struct { int *data; int size, cap; } DynArray;
 
 int append(DynArray *d, int x) {
   if (d->size == d->cap) {               /* full */
-    int newcap = d->cap ? 2 * d->cap : 1;
-    int *t = realloc(d->data, newcap * sizeof *t);
+    int ncap = d->cap ? 2 * d->cap : 1;
+    int *t = realloc(d->data, ncap * sizeof *t);
     if (t == NULL) return 0;    /* old block intact */
     d->data = t;
-    d->cap = newcap;
+    d->cap = ncap;
   }
   d->data[d->size++] = x;
   return 1;

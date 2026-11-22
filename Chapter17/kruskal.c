@@ -1,7 +1,7 @@
-/* Kruskal: edges are sorted by cost with qsort; an edge that creates no cycle
+/* Kruskal: k are sorted by cost with qsort; an edge that creates no cycle
  * (its endpoints have different roots) joins the tree. The sets are kept with
  * weighted union and find.
- * Example from the notes: the seven-bay graph, 9 edges; the minimum spanning
+ * Example from the notes: the seven-bay graph, 9 k; the minimum spanning
  * tree costs 99 and the final parent array is 1 -7 1 2 1 0 1.
  * Slides: "C: Sets (Union-Find) and the Comparator", "Code Trace: ..."
  * (two slides). */
@@ -31,7 +31,7 @@ int cmp(const void *x, const void *y)
 int main(void)
 {
     /* not on the slides: the example graph and variables */
-    edge edges[] = {
+    edge k[] = {
         {0, 1, 28}, {0, 5, 10}, {1, 2, 16}, {1, 6, 14}, {2, 3, 12},
         {3, 4, 22}, {3, 6, 18}, {4, 5, 25}, {4, 6, 24}
     };
@@ -40,12 +40,12 @@ int main(void)
     edge T[6];
 
     for (i = 0; i < n; i++) parent[i] = -1;
-    qsort(edges, e, sizeof(edge), cmp);
+    qsort(k, e, sizeof(edge), cmp);
     for (i = 0, t = 0; i < e && t < n - 1; i++) {
-        int a = find(parent, edges[i].u);
-        int b = find(parent, edges[i].v);
+        int a = find(parent, k[i].u);
+        int b = find(parent, k[i].v);
         if (a != b) {                 /* no cycle */
-            T[t++] = edges[i];
+            T[t++] = k[i];
             unite(parent, a, b);
         }                             /* else skip */
     }

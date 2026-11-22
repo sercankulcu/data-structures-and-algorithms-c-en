@@ -9,17 +9,17 @@
 #include <stdlib.h>
 
 #define INF 1000000      /* not on the slides: the constant from the notes */
-#define MAX_VERTICES 50  /* not on the slides: the constant from Chapter 15 */
+#define MAX_V 50  /* not on the slides: the constant from Chapter 15 */
 
 /* not on the slides: weighted adjacency list (Chapter 15, "Weighted Graph
  * Representation"), with the header name used on the slide */
-typedef struct node *node_pointer;
+typedef struct node *node_ptr;
 typedef struct node {
     int vertex;
     int weight;         /* cost of the edge */
-    node_pointer link;
+    node_ptr link;
 } node;
-node_pointer graph[MAX_VERTICES];
+node_ptr graph[MAX_V];
 
 /* not on the slides: the binary min-heap from the notes */
 typedef struct { int vertex, key; } entry;
@@ -55,7 +55,7 @@ int heap_pop_min(heap *H)
 /* not on the slides: adds (v, w) at the front of graph[u] */
 static void add_edge(int u, int v, int w)
 {
-    node_pointer p = malloc(sizeof(node));
+    node_ptr p = malloc(sizeof(node));
     if (p == NULL) exit(1);
     p->vertex = v;  p->weight = w;
     p->link = graph[u];
@@ -70,8 +70,8 @@ int main(void)
         {3, 4, 22}, {3, 6, 18}, {4, 5, 25}, {4, 6, 24}
     };
     int n = 7, e = 9, u, v, total = 0;
-    int lowcost[MAX_VERTICES], closest[MAX_VERTICES], in_tree[MAX_VERTICES];
-    node_pointer p;
+    int lowcost[MAX_V], closest[MAX_V], in_tree[MAX_V];
+    node_ptr p;
     heap pq, *H = &pq;
 
     for (v = 0; v < e; v++) {

@@ -13,15 +13,15 @@ struct node {
     node_ptr link;
 };
 
-void insert_sorted(node_ptr *head, node_ptr temp) {
+void sorted_insert(node_ptr *head, node_ptr fresh) {
     node_ptr prev = NULL, p = *head;
-    while (p != NULL && p->data < temp->data) {
+    while (p != NULL && p->data < fresh->data) {
         prev = p;
         p = p->link;
     }
-    temp->link = p;
-    if (prev == NULL) *head = temp;  // at the front
-    else prev->link = temp;          // middle/end
+    fresh->link = p;
+    if (prev == NULL) *head = fresh;  // at the front
+    else prev->link = fresh;          // middle/end
 }
 
 /* not on the slides: allocates a node and stores its value (new_node from the "malloc and free" code) */
@@ -56,18 +56,18 @@ int main(void)
 {
     node_ptr list = NULL;
     node_ptr five;
-    insert_sorted(&list, new_node(2));
-    insert_sorted(&list, new_node(5));
-    insert_sorted(&list, new_node(9));
+    sorted_insert(&list, new_node(2));
+    sorted_insert(&list, new_node(5));
+    sorted_insert(&list, new_node(9));
     print_list(list);
-    insert_sorted(&list, new_node(7));    /* middle */
+    sorted_insert(&list, new_node(7));    /* middle */
     print_list(list);
-    insert_sorted(&list, new_node(1));    /* front */
+    sorted_insert(&list, new_node(1));    /* front */
     print_list(list);
-    insert_sorted(&list, new_node(10));   /* back */
+    sorted_insert(&list, new_node(10));   /* back */
     print_list(list);
     five = new_node(5);                   /* equal value */
-    insert_sorted(&list, five);
+    sorted_insert(&list, five);
     print_list(list);
     printf("new 5 before the old one: %s\n",
            five->link != NULL && five->link->data == 5 ? "yes" : "no");
