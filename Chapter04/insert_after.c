@@ -16,7 +16,7 @@ struct node {
 node_ptr new_node(int x) {
     node_ptr p = malloc(sizeof *p);
     if (p == NULL) {
-        fprintf(stderr, "Bellek yetmiyor yetmiyoor...\n");
+        fprintf(stderr, "No memory, no memoryyy...\n");
         exit(1);
     }
     p->data = x;

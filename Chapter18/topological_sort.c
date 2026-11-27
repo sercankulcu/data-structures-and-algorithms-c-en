@@ -1,4 +1,4 @@
-/* Topological sort (AoV network): headers with a count field hold the number
+/* Topological sort (AOV network): headers with a count field hold the number
  * of predecessors; vertices whose count is 0 wait in a stack embedded in the
  * count field. If vertices remain unprinted when the stack runs empty, the
  * graph has a cycle.
@@ -14,41 +14,41 @@
 
 #define MAX_VERTICES 6   /* not on the slides: the chapter's constant */
 
-typedef struct node *node_ptr;
+typedef struct node *node_pointer;
 typedef struct node {
     int vertex;
-    node_ptr link;
+    node_pointer link;
 } node;
 typedef struct {
     int count;      /* for <i,j>: the number of edges whose head is j */
-    node_ptr link;
-} head_node;
-head_node head[MAX_VERTICES];
+    node_pointer link;
+} hdnodes;
+hdnodes graph[MAX_VERTICES];
 
-void topological_order(head_node head[], int n)
+void topsort(hdnodes graph[], int n)
 {
     int i, j, k, top = -1;
-    node_ptr p;
+    node_pointer p;
     for (i = 0; i < n; i++)      /* count 0: push */
-        if (!head[i].count) {
-            head[i].count = top;  top = i; }
+        if (!graph[i].count) {
+            graph[i].count = top;  top = i; }
     for (i = 0; i < n; i++) {
         if (top == -1) { printf("cycle"); break; }
-        j = top;  top = head[top].count;
+        j = top;  top = graph[top].count;
         printf("%d ", j);
-        for (p = head[j].link; p; p = p->link) {
+        for (p = graph[j].link; p; p = p->link) {
             k = p->vertex;
-            if (--head[k].count == 0) {
-                head[k].count = top;  top = k; }
+            if (--graph[k].count == 0) {
+                graph[k].count = top;  top = k; }
         }
     }
 }
 
 /* not on the slides: add_edge from the notes (appends, increments the count) */
-int add_edge(head_node head[], int i, int j)
+int add_edge(hdnodes graph[], int i, int j)
 {
-    node_ptr *tail = &head[i].link;   /* address of the link field */
-    node_ptr new_node = malloc(sizeof(node));
+    node_pointer *tail = &graph[i].link;   /* address of the link field */
+    node_pointer new_node = malloc(sizeof(node));
     if (new_node == NULL)
         return 0;                     /* out of memory */
     new_node->vertex = j;
@@ -56,22 +56,22 @@ int add_edge(head_node head[], int i, int j)
     while (*tail != NULL)             /* find the end of the list */
         tail = &(*tail)->link;
     *tail = new_node;
-    head[j].count++;                 /* j has one more predecessor */
+    graph[j].count++;                 /* j has one more predecessor */
     return 1;
 }
 
 /* not on the slides: free_lists from the notes */
-void free_lists(head_node head[], int n)
+void free_lists(hdnodes graph[], int n)
 {
     int i;
-    node_ptr p, next;
+    node_pointer p, next;
     for (i = 0; i < n; i++) {
-        for (p = head[i].link; p; p = next) {
+        for (p = graph[i].link; p; p = next) {
             next = p->link;           /* save before free */
             free(p);
         }
-        head[i].link = NULL;
-        head[i].count = 0;
+        graph[i].link = NULL;
+        graph[i].count = 0;
     }
 }
 
@@ -84,16 +84,16 @@ int main(void)
     int i;
 
     for (i = 0; i < 8; i++)
-        if (!add_edge(head, net[i][0], net[i][1])) exit(1);
-    topological_order(head, 6);
+        if (!add_edge(graph, net[i][0], net[i][1])) exit(1);
+    topsort(graph, 6);
     printf("\n");
-    free_lists(head, 6);
+    free_lists(graph, 6);
 
     for (i = 0; i < 3; i++)
-        if (!add_edge(head, cyclic[i][0], cyclic[i][1])) exit(1);
-    topological_order(head, 3);
+        if (!add_edge(graph, cyclic[i][0], cyclic[i][1])) exit(1);
+    topsort(graph, 3);
     printf("\n");
-    free_lists(head, 3);
+    free_lists(graph, 3);
     return 0;
 }
 

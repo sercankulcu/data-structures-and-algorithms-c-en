@@ -1,4 +1,4 @@
-/* Activity-on-edge (AoE) network: the forward pass in topological order finds
+/* Activity-on-edge (AOE) network: the forward pass in topological order finds
  * the earliest event times (largest), the backward pass on the reversed graph
  * finds the latest times (smallest); activities with slack 0 are critical.
  * Example from the notes: 9 events, 11 activities (a0..a10); the project
@@ -15,23 +15,23 @@
 
 /* not on the slides: list node with a duration field and the counted header
  * from the notes */
-typedef struct node *node_ptr;
+typedef struct node *node_pointer;
 typedef struct node {
     int vertex;
     int duration;        /* duration of the activity */
-    node_ptr link;
+    node_pointer link;
 } node;
 typedef struct {
     int count;
-    node_ptr link;
-} head_node;
+    node_pointer link;
+} hdnodes;
 int earliest[MAX_VERTICES], latest[MAX_VERTICES];
 
 /* not on the slides: add_edge from the notes (appends, increments the count) */
-int add_edge(head_node head[], int i, int j, int duration)
+int add_edge(hdnodes graph[], int i, int j, int duration)
 {
-    node_ptr *tail = &head[i].link;
-    node_ptr new_node = malloc(sizeof(node));
+    node_pointer *tail = &graph[i].link;
+    node_pointer new_node = malloc(sizeof(node));
     if (new_node == NULL)
         return 0;
     new_node->vertex = j;
@@ -40,83 +40,83 @@ int add_edge(head_node head[], int i, int j, int duration)
     while (*tail != NULL)
         tail = &(*tail)->link;
     *tail = new_node;
-    head[j].count++;
+    graph[j].count++;
     return 1;
 }
 
-/* forward pass: topological_order + the earliest-time lines */
-void compute_earliest(head_node head[], int n)
+/* forward pass: topsort + the earliest-time lines */
+void compute_earliest(hdnodes graph[], int n)
 {
     int i, j, k, top = -1;
-    node_ptr p;
+    node_pointer p;
     for (i = 0; i < n; i++)
         earliest[i] = 0;
     for (i = 0; i < n; i++)
-        if (!head[i].count) {
-            head[i].count = top;  top = i; }
+        if (!graph[i].count) {
+            graph[i].count = top;  top = i; }
     for (i = 0; i < n; i++) {
         if (top == -1) { printf("cycle"); break; }
-        j = top;  top = head[top].count;   /* pop */
+        j = top;  top = graph[top].count;   /* pop */
         printf("%d ", j);
-        for (p = head[j].link; p; p = p->link) {
+        for (p = graph[j].link; p; p = p->link) {
             k = p->vertex;
             if (earliest[k] < earliest[j] + p->duration)
                 earliest[k] = earliest[j] + p->duration;
-            if (--head[k].count == 0) {
-                head[k].count = top;  top = k;  /* push */
+            if (--graph[k].count == 0) {
+                graph[k].count = top;  top = k;  /* push */
             }
         }
     }
 }
 
 /* not on the slides: build_reverse from the notes (reverses the arrows) */
-int build_reverse(head_node head[], head_node rev[], int n)
+int build_reverse(hdnodes graph[], hdnodes rev[], int n)
 {
     int i;
-    node_ptr p;
+    node_pointer p;
     for (i = 0; i < n; i++) {
         rev[i].count = 0;
         rev[i].link = NULL;
     }
     for (i = 0; i < n; i++)
-        for (p = head[i].link; p; p = p->link)      /* <i, p->vertex> */
+        for (p = graph[i].link; p; p = p->link)      /* <i, p->vertex> */
             if (!add_edge(rev, p->vertex, i, p->duration))
                 return 0;
     return 1;
 }
 
 /* backward pass: the same loop on the reversed graph, latest-time lines */
-void compute_latest(head_node head[], int n, int finish)
+void compute_latest(hdnodes graph[], int n, int finish)
 {
     int i, j, k, top = -1;
-    node_ptr p;
+    node_pointer p;
     for (i = 0; i < n; i++)
         latest[i] = finish;
     for (i = 0; i < n; i++)
-        if (!head[i].count) {
-            head[i].count = top;  top = i; }
+        if (!graph[i].count) {
+            graph[i].count = top;  top = i; }
     for (i = 0; i < n; i++) {
         if (top == -1) { printf("cycle"); break; }
-        j = top;  top = head[top].count;   /* reversed list */
+        j = top;  top = graph[top].count;   /* reversed list */
         printf("%d ", j);
-        for (p = head[j].link; p; p = p->link) {
+        for (p = graph[j].link; p; p = p->link) {
             k = p->vertex;                       /* k: predecessor */
             if (latest[k] > latest[j] - p->duration)
                 latest[k] = latest[j] - p->duration;
-            if (--head[k].count == 0) {
-                head[k].count = top;  top = k;
+            if (--graph[k].count == 0) {
+                graph[k].count = top;  top = k;
             }
         }
     }
 }
 
-void slacks(head_node head[], int n)
+void slacks(hdnodes graph[], int n)
 {
     int i;
-    node_ptr p;
+    node_pointer p;
     /* after computing earliest[] and latest[] */
     for (i = 0; i < n; i++)
-        for (p = head[i].link; p; p = p->link) {
+        for (p = graph[i].link; p; p = p->link) {
             int early = earliest[i];
             int late  = latest[p->vertex] - p->duration;
             printf("<%d,%d> early=%d late=%d slack=%d%s\n",
@@ -126,17 +126,17 @@ void slacks(head_node head[], int n)
 }
 
 /* not on the slides: free_lists from the notes */
-void free_lists(head_node head[], int n)
+void free_lists(hdnodes graph[], int n)
 {
     int i;
-    node_ptr p, next;
+    node_pointer p, next;
     for (i = 0; i < n; i++) {
-        for (p = head[i].link; p; p = next) {
+        for (p = graph[i].link; p; p = next) {
             next = p->link;           /* save before free */
             free(p);
         }
-        head[i].link = NULL;
-        head[i].count = 0;
+        graph[i].link = NULL;
+        graph[i].count = 0;
     }
 }
 
@@ -156,15 +156,15 @@ int main(void)
         {0, 1, 6}, {0, 2, 4}, {0, 3, 5}, {1, 4, 1}, {2, 4, 1}, {3, 5, 2},
         {4, 6, 9}, {4, 7, 7}, {5, 7, 4}, {6, 8, 2}, {7, 8, 4}
     };
-    static head_node head[MAX_VERTICES], rev[MAX_VERTICES];
+    static hdnodes graph[MAX_VERTICES], rev[MAX_VERTICES];
     int n = 9, i;
 
     for (i = 0; i < 11; i++)
-        if (!add_edge(head, act[i][0], act[i][1], act[i][2])) exit(1);
-    if (!build_reverse(head, rev, n)) exit(1);   /* before the counts change */
+        if (!add_edge(graph, act[i][0], act[i][1], act[i][2])) exit(1);
+    if (!build_reverse(graph, rev, n)) exit(1);   /* before the counts change */
 
     printf("forward: ");
-    compute_earliest(head, n);
+    compute_earliest(graph, n);
     printf("\n");
     print_array("earliest", earliest, n);
 
@@ -173,8 +173,8 @@ int main(void)
     printf("\n");
     print_array("latest", latest, n);
 
-    slacks(head, n);
-    free_lists(head, n);
+    slacks(graph, n);
+    free_lists(graph, n);
     free_lists(rev, n);
     return 0;
 }

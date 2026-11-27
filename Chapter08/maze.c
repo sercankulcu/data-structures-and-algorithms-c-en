@@ -84,7 +84,7 @@ void path(void) {
       printf("%2d%5d\n", stack[i].row, stack[i].col);
     printf("%2d%5d\n", row, col);      /* last position */
     printf("%2d%5d\n", EXIT_ROW, EXIT_COL);
-  } else printf("No path to the exit found!\n");
+  } else printf("The maze does not have a path\n");
 }
 
 /* not on the slides: the loop on the "Maze Step by Step" slide is the body
@@ -124,7 +124,7 @@ while (top > -1 && !found) {
       printf("%2d%5d\n", stack[i].row, stack[i].col);
     printf("%2d%5d\n", row, col);
     printf("%2d%5d\n", EXIT_ROW, EXIT_COL);
-  } else printf("No path to the exit found!\n");
+  } else printf("The maze does not have a path\n");
 }
 
 int main(void)

@@ -1,11 +1,11 @@
 /* Two-dimensional dynamic array: first the row pointers, then each row
  * with its own malloc; if a row cannot be allocated, the earlier ones are
- * freed. Slide: "array2d() Step by Step". Example from the notes:
- * array2d(3, 4), x[i][j] = 10i + j; x[2][3] = 23 and *(*(x + 1) + 2) = 12. */
+ * freed. Slide: "make2d() Step by Step". Example from the notes:
+ * make2d(3, 4), x[i][j] = 10i + j; x[2][3] = 23 and *(*(x + 1) + 2) = 12. */
 #include <stdio.h>
 #include <stdlib.h>
 
-int **array2d(int rows, int cols) {
+int **make2d(int rows, int cols) {
   int i, **x = malloc(rows * sizeof *x);
   if (x == NULL) return NULL;
   for (i = 0; i < rows; i++) {
@@ -26,7 +26,7 @@ static void free2d(int **x, int rows) {
 }
 
 int main(void) {  /* not on the slides */
-  int i, j, **x = array2d(3, 4);
+  int i, j, **x = make2d(3, 4);
   if (x == NULL) {
     printf("Out of memory\n");
     return 1;

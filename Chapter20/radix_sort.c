@@ -11,38 +11,38 @@
 
 #define MAX_DIGIT 3
 #define RADIX 10
-typedef struct item *item_ptr;
-struct item {
+typedef struct node *node_ptr;
+struct node {
     int digit[MAX_DIGIT];  /* 179 -> {1, 7, 9} */
-    item_ptr link;
+    node_ptr next;
 };
 
 /* not on the slides: function header and bucket arrays from the notes */
-item_ptr radixsort(item_ptr p) {
-    item_ptr front[RADIX], back[RADIX];  /* bucket heads and tails */
+node_ptr radixsort(node_ptr p) {
+    node_ptr head[RADIX], tail[RADIX];  /* bucket heads and tails */
     for (int i = MAX_DIGIT - 1; i >= 0; i--) {
         for (int j = 0; j < RADIX; j++)
-            front[j] = back[j] = NULL;
-        for (; p; p = p->link) {     // distribute
+            head[j] = tail[j] = NULL;
+        for (; p; p = p->next) {     // distribute
             int b = p->digit[i];
-            if (!front[b]) front[b] = p;
-            else back[b]->link = p;
-            back[b] = p;
+            if (!head[b]) head[b] = p;
+            else tail[b]->next = p;
+            tail[b] = p;
         }
         for (int j = RADIX - 1; j >= 0; j--) // collect
-            if (front[j]) { back[j]->link = p; p = front[j]; }
+            if (head[j]) { tail[j]->next = p; p = head[j]; }
     }
     return p;
 }
 
-void free_list(item_ptr *pp);   /* not on the slides: prototype */
+void free_list(node_ptr *pp);   /* not on the slides: prototype */
 
 /* not on the slides: from the notes */
 /* builds a linked list from 3-digit numbers; on out-of-memory returns NULL after freeing what was built */
-item_ptr build_list(const int x[], int n) {
-    item_ptr head = NULL, last = NULL;
+node_ptr build_list(const int x[], int n) {
+    node_ptr head = NULL, last = NULL;
     for (int k = 0; k < n; k++) {
-        item_ptr d = malloc(sizeof *d);
+        node_ptr d = malloc(sizeof *d);
         if (d == NULL) {               /* stopped halfway: no leak */
             free_list(&head);
             return NULL;
@@ -50,8 +50,8 @@ item_ptr build_list(const int x[], int n) {
         d->digit[0] = x[k] / 100;      /* hundreds */
         d->digit[1] = x[k] / 10 % 10;  /* tens */
         d->digit[2] = x[k] % 10;       /* ones */
-        d->link = NULL;
-        if (last) last->link = d; else head = d;
+        d->next = NULL;
+        if (last) last->next = d; else head = d;
         last = d;
     }
     return head;
@@ -59,25 +59,25 @@ item_ptr build_list(const int x[], int n) {
 
 /* not on the slides: from the notes */
 /* frees all nodes of the list and sets the caller's pointer to NULL */
-void free_list(item_ptr *pp) {
+void free_list(node_ptr *pp) {
     while (*pp) {
-        item_ptr next = (*pp)->link;
+        node_ptr next = (*pp)->next;
         free(*pp);
         *pp = next;
     }
 }
 
 /* not on the slides: prints the list with three digits */
-static void print_list(const char *name, item_ptr p) {
+static void print_list(const char *name, node_ptr p) {
     printf("%s", name);
-    for (; p; p = p->link)
+    for (; p; p = p->next)
         printf(" %d%d%d", p->digit[0], p->digit[1], p->digit[2]);
     printf("\n");
 }
 
 int main(void) {   /* not on the slides */
     int x[] = {179, 208, 306, 93, 859, 984, 55, 9, 271, 33};
-    item_ptr p = build_list(x, 10);
+    node_ptr p = build_list(x, 10);
     if (p == NULL) return 1;
     print_list("before:", p);
     p = radixsort(p);

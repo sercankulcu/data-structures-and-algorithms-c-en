@@ -1,5 +1,5 @@
 /* Improved quicksort (quicksort3): the pivot is the median of three (a[L],
- * the middle item, a[R]), pieces smaller than M are left unsorted, and hybrid_sort
+ * the middle item, a[R]), pieces smaller than M are left unsorted, and sort
  * makes a single insertion sort pass at the end. The example is the trace
  * from the notes: [8, 3, 5, 1, 9, 2, 7, 6, 4] with M = 3. After quicksort3
  * the array is almost sorted; insertion fixes the remaining two pairs.
@@ -53,7 +53,7 @@ void quicksort3(int a[], int L, int R) {
     quicksort3(a, L, i - 1);
     quicksort3(a, i + 1, R);
 }
-void hybrid_sort(int a[], int L, int R) {
+void sort(int a[], int L, int R) {
     quicksort3(a, L, R);
     insertion(a, L, R);   /* the small pieces left */
 }
@@ -67,17 +67,17 @@ static void print_array(const char *name, const int a[], int n) {
 
 int main(void) {   /* not on the slides */
     int a[] = {8, 3, 5, 1, 9, 2, 7, 6, 4};
-    quicksort3(a, 0, 8);           /* the first step of hybrid_sort, alone */
+    quicksort3(a, 0, 8);           /* the first step of sort, alone */
     print_array("quicksort3: ", a, 9);
 
     int b[] = {8, 3, 5, 1, 9, 2, 7, 6, 4};
-    hybrid_sort(b, 0, 8);
-    print_array("hybrid_sort:", b, 9);
+    sort(b, 0, 8);
+    print_array("sort:", b, 9);
     return 0;
 }
 
 
 /* Expected output:
  * quicksort3:  1 3 2 4 6 5 7 8 9
- * hybrid_sort: 1 2 3 4 5 6 7 8 9
+ * sort: 1 2 3 4 5 6 7 8 9
  */

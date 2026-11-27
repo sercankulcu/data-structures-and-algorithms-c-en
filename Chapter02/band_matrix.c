@@ -1,7 +1,7 @@
 /* Band matrix: the a + b - 1 bands around the diagonal are stored in the
  * array band[], starting from the lowest band; start[] holds where each
- * band begins. diag_start() gives the same start by a formula.
- * Slides: "band_build() Step by Step" (and the next one), "band_get()
+ * band begins. band_start() gives the same start by a formula.
+ * Slides: "build_band() Step by Step" (and the next one), "band_index()
  * Step by Step", "Analysis and Homework 1". Example from the notes
  * (Example 2.3): n = 4, a = 3, b = 2; input 6 10 3 7 11 1 4 8 12 2 5 9. */
 #include <stdio.h>
@@ -13,7 +13,7 @@ static const int input[] = {6, 10, 3, 7, 11, 1, 4, 8, 12, 2, 5, 9};
 static int consumed = 0;
 static void read_int(int *p) { *p = input[consumed++]; }
 
-void band_build(int band[], int start[],
+void build_band(int band[], int start[],
                 int n, int a, int b) {
   int i, k, total = 0;       /* earlier bands */
   if (n*(a+b-1) - a*(a-1)/2 - b*(b-1)/2 > MAX_SIZE) {
@@ -27,7 +27,7 @@ void band_build(int band[], int start[],
   }
 }
 
-int band_get(int i, int j, int n, int a,
+int band_index(int i, int j, int n, int a,
                int b, int start[]) {
   if (i < 0 || j < 0 || i >= n || j >= n) {
     printf("Index out of range\n"); return -3;
@@ -42,7 +42,7 @@ int band_get(int i, int j, int n, int a,
 }
 
 /* t: band number (1-a..b-1); same as start[t+a-1] */
-int diag_start(int t, int n, int a) {
+int band_start(int t, int n, int a) {
   if (t <= 0)                     /* lower bands */
     return (t + a - 1) * n
            - (a * (a - 1) + t * (1 - t)) / 2;
@@ -55,7 +55,7 @@ int main(void) {  /* not on the slides */
   int n = 4, a = 3, b = 2, i, j, k, t;
   int queries[4][2] = {{3, 1}, {1, 2}, {0, 3}, {3, 0}};
 
-  band_build(band, start, n, a, b);
+  build_band(band, start, n, a, b);
   printf("start:");
   for (k = 0; k < a + b - 1; k++) printf(" %d", start[k]);
   printf("\nband:");
@@ -63,20 +63,20 @@ int main(void) {  /* not on the slides */
   printf("\n");
 
   for (k = 0; k < 4; k++) {
-    int s = band_get(queries[k][0], queries[k][1], n, a, b, start);
+    int s = band_index(queries[k][0], queries[k][1], n, a, b, start);
     printf("d%d%d -> %d", queries[k][0], queries[k][1], s);
     if (s >= 0) printf(" (value %d)", band[s]);
     printf("\n");
   }
 
-  printf("diag_start:");
-  for (t = 1 - a; t <= b - 1; t++) printf(" %d", diag_start(t, n, a));
+  printf("band_start:");
+  for (t = 1 - a; t <= b - 1; t++) printf(" %d", band_start(t, n, a));
   printf("\n");
 
   printf("matrix (0 outside the band):\n");
   for (i = 0; i < n; i++) {
     for (j = 0; j < n; j++) {
-      int s = band_get(i, j, n, a, b, start);
+      int s = band_index(i, j, n, a, b, start);
       printf("%3d", s >= 0 ? band[s] : 0);
     }
     printf("\n");
@@ -91,7 +91,7 @@ int main(void) {  /* not on the slides */
  * d12 -> 10 (value 5)
  * d03 -> -1
  * d30 -> -2
- * diag_start: 0 2 5 9
+ * band_start: 0 2 5 9
  * matrix (0 outside the band):
  *   1  2  0  0
  *   3  4  5  0

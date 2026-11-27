@@ -8,11 +8,11 @@
 int main(void) {
   Fraction *a = fraction_create(1, 2);
   Fraction *b = fraction_create(1, 3);
-  Fraction *t = NULL;
-  if (a && b) t = fraction_add(a, b);
-  if (t) fraction_print(t);  /* 5/6 */
+  Fraction *s = NULL;
+  if (a && b) s = fraction_add(a, b);
+  if (s) fraction_print(s);  /* 5/6 */
   fraction_delete(a); fraction_delete(b);
-  fraction_delete(t);  /* free(NULL) is safe */
+  fraction_delete(s);  /* free(NULL) is safe */
 
   /* not on the slides: fraction_equal test (the 2/4 and 1/2 example from the notes) */
   {

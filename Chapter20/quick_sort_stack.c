@@ -11,13 +11,13 @@
 #define SWAP(A, B) do { int t_ = (A); (A) = (B); (B) = t_; } while (0)
 
 /* on the slides it is on the second slide; must be defined before quicksort2 */
-#define YMAX 64     /* > 2*lg n */
-static int stack[YMAX], top;
+#define STACK_MAX 64     /* > 2*lg n */
+static int stack[STACK_MAX], top;
 void stack_init(void) { top = 0; }
 int stack_empty(void) { return top == 0; }
 void push(int x) { stack[top++] = x; }
 int pop(void) { return stack[--top]; }
-#define push_range(A, B) \
+#define push2(A, B) \
   do { push(B); push(A); } while (0)
 
 /* not on the slides: partition from "Partitioning Invariant" slide */
@@ -36,15 +36,15 @@ int partition(int a[], int L, int R) {
 }
 
 void quicksort2(int a[], int L, int R) {
-  stack_init(); push_range(L, R);
+  stack_init(); push2(L, R);
   while (!stack_empty()) {
     L = pop(); R = pop();
     if (R <= L) continue;
     int i = partition(a, L, R);
     if (i - L > R - i) {       // larger part first
-      push_range(L, i - 1); push_range(i + 1, R);
+      push2(L, i - 1); push2(i + 1, R);
     } else {
-      push_range(i + 1, R); push_range(L, i - 1);
+      push2(i + 1, R); push2(L, i - 1);
     }
   }
 }

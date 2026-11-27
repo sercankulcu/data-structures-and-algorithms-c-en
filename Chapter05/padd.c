@@ -27,20 +27,20 @@ void attach(float coef, int expon) {
   P[avail].coef = coef;
   P[avail++].expon = expon;
 }
-#define APPEND(k) attach(P[k].coef, P[k].expon)
+#define COPY(k) attach(P[k].coef, P[k].expon)
 
 void padd(int sa,int fa,int sb,int fb,int*sd,int*fd){
   float c; *sd = avail;               /* start of D */
   while (sa <= fa && sb <= fb)
     switch (COMPARE(P[sa].expon, P[sb].expon)) {
-    case -1: APPEND(sb); sb++; break;     /* B larger */
-    case  1: APPEND(sa); sa++; break;     /* A larger */
+    case -1: COPY(sb); sb++; break;     /* B larger */
+    case  1: COPY(sa); sa++; break;     /* A larger */
     case  0: c = P[sa].coef + P[sb].coef;
       if (c) attach(c, P[sa].expon); /* skip 0 */
       sa++; sb++;
     }
-  for (; sa <= fa; sa++) APPEND(sa);      /* rest of A */
-  for (; sb <= fb; sb++) APPEND(sb);      /* rest of B */
+  for (; sa <= fa; sa++) COPY(sa);      /* rest of A */
+  for (; sb <= fb; sb++) COPY(sb);      /* rest of B */
   *fd = avail - 1;
 }
 

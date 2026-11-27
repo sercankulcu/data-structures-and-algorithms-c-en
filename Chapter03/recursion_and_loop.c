@@ -9,7 +9,7 @@ long fact(int n) {
 }
 
 /* iterative */
-long fact_loop(int n) {
+long fact_iter(int n) {
   long f = 1;
   while (n > 1)
     f *= n--;
@@ -27,15 +27,15 @@ int main(void) {  /* not on the slides */
   int k;
   for (k = 0; k < 4; k++) {
     int n = example[k];
-    printf("n = %d: fact %ld, fact_loop %ld, fact_tail %ld\n",
-           n, fact(n), fact_loop(n), fact_tail(n, 1));
+    printf("n = %d: fact %ld, fact_iter %ld, fact_tail %ld\n",
+           n, fact(n), fact_iter(n), fact_tail(n, 1));
   }
   return 0;
 }
 
 /* Expected output:
- * n = 0: fact 1, fact_loop 1, fact_tail 1
- * n = 1: fact 1, fact_loop 1, fact_tail 1
- * n = 4: fact 24, fact_loop 24, fact_tail 24
- * n = 10: fact 3628800, fact_loop 3628800, fact_tail 3628800
+ * n = 0: fact 1, fact_iter 1, fact_tail 1
+ * n = 1: fact 1, fact_iter 1, fact_tail 1
+ * n = 4: fact 24, fact_iter 24, fact_tail 24
+ * n = 10: fact 3628800, fact_iter 3628800, fact_tail 3628800
  */

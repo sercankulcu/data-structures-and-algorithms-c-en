@@ -1,4 +1,4 @@
-/* Bellman-Ford: all edges are relaxed n - 1 times; if an edge still relaxes
+/* Bellman-Ford: all E are relaxed n - 1 times; if an edge still relaxes
  * in round n, a reachable negative cycle exists (-1). O(n e).
  * Examples from the notes: 0->1 (4), 0->2 (5), 1->3 (2), 2->1 (-3):
  * d = 0 2 5 4; on the cycle 1 -> 2 -> 1 of total -1 the result is -1.
@@ -12,20 +12,20 @@
 typedef struct {
     int u, v, w;        /* edge <u,v>, weight w */
 } edge;
-int BellmanFord(edge edges[], int n, int e, int s, int d[])
+int BellmanFord(edge E[], int n, int e, int s, int d[])
 {
     int i, j, t, u, v;
     for (i = 0; i < n; i++) d[i] = INF;
     d[s] = 0;
     for (t = 1; t <= n - 1; t++)          /* n-1 rounds */
         for (j = 0; j < e; j++) {
-            u = edges[j].u;  v = edges[j].v;
-            if (d[u] != INF && d[u] + edges[j].w < d[v])
-                d[v] = d[u] + edges[j].w;
+            u = E[j].u;  v = E[j].v;
+            if (d[u] != INF && d[u] + E[j].w < d[v])
+                d[v] = d[u] + E[j].w;
         }
     for (j = 0; j < e; j++)               /* round n */
-        if (d[edges[j].u] != INF &&
-            d[edges[j].u] + edges[j].w < d[edges[j].v]) return -1;
+        if (d[E[j].u] != INF &&
+            d[E[j].u] + E[j].w < d[E[j].v]) return -1;
     return 0;              /* -1: negative cycle */
 }
 

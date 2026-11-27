@@ -1,11 +1,11 @@
 /* Dijkstra (shortest_path): in every round the nearest unmarked vertex
- * (min_vertex) is finalized and its neighbors are relaxed; pred[] holds the
+ * (choose) is finalized and its neighbors are relaxed; pred[] holds the
  * shortest-path tree, print_path writes the path recursively from the source
  * to the target. Cost matrix, O(n^2).
  * Example from the notes: the 6-vertex graph (Horowitz-Sahni). Source 0:
  * 2 -> 10, 3 -> 25, 1 -> 45, 4 -> 45, no path to 5. Source 2: 0 -> 20,
  * 3 -> 15, 1 -> 35, 4 -> 45.
- * Slides: "C Code: The Cost Matrix and min_vertex", "shortest_path(): The Main
+ * Slides: "C Code: The Cost Matrix and choose", "shortest_path(): The Main
  * Function", "Code Trace: ...", "Finding the Path: The Predecessor Array". */
 #include <stdio.h>
 #include <limits.h>
@@ -20,7 +20,7 @@ int cost[][MAX_VERTICES] = {
     {1000,   20, 1000,   0,   35, 1000},
     {1000, 1000, 1000,  30,    0, 1000},   /* missing row */
     {1000, 1000, 1000,   3, 1000,    0}};  /* 100 -> 1000 */
-int min_vertex(int dist[], int n, short found[])
+int choose(int dist[], int n, short found[])
 {
     int i, min = INT_MAX, pos = -1;
     for (i = 0; i < n; i++)
@@ -42,7 +42,7 @@ void shortest_path(int v, int cost[][MAX_VERTICES],
     }
     found[v] = TRUE;  dist[v] = 0;
     for (i = 2; i < n; i++) {        /* n-2 rounds */
-        u = min_vertex(dist, n, found);
+        u = choose(dist, n, found);
         if (u < 0) break;            /* none left */
         found[u] = TRUE;
         for (w = 0; w < n; w++)
@@ -54,14 +54,14 @@ void shortest_path(int v, int cost[][MAX_VERTICES],
     }
 }
 
-void print_path(int pred[], int s, int t)
+void print_path(int pred[], int s, int h)
 {
-    if (t == s) {
+    if (h == s) {
         printf("%d", s);
         return;
     }
-    print_path(pred, s, pred[t]);   /* pred first */
-    printf(" -> %d", t);
+    print_path(pred, s, pred[h]);   /* pred first */
+    printf(" -> %d", h);
 }
 
 /* not on the slides: prints all results for one source; pred[] is

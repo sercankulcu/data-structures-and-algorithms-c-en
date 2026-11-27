@@ -1,5 +1,5 @@
 /* The n-queens problem by backtracking: q[r] is the column of the queen in
- * row r; safe() checks for a clash in the same column or on a diagonal,
+ * row r; is_safe() checks for a clash in the same column or on a diagonal,
  * place() tries row by row and returns at a dead end. Slides: "The
  * n-Queens Problem", "4-Queens Step by Step". Examples from the notes: the
  * first solution for n = 4 and n = 8. */
@@ -8,7 +8,7 @@
 
 int q[8];  /* q[r]: column of the queen in row r */
 
-int safe(int r, int c) {
+int is_safe(int r, int c) {
   int i;
   for (i = 0; i < r; i++)
     if (q[i] == c || abs(q[i] - c) == r - i)
@@ -20,7 +20,7 @@ int place(int r, int n) {
   int c;
   if (r == n) return 1;             /* solved */
   for (c = 0; c < n; c++)
-    if (safe(r, c)) {
+    if (is_safe(r, c)) {
       q[r] = c;
       if (place(r + 1, n)) return 1;
     }

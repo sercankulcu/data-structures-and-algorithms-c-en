@@ -27,7 +27,7 @@ The same programs with Turkish identifiers, for the Turkish edition of the cours
 | `Chapter15` | Graphs | Degree from the adjacency matrix, adjacency lists, the transpose, the sequential representation, the adjacency multilist, weighted graphs, DFS, BFS, connected components, cycle detection |
 | `Chapter16` | Sets and Union-Find | Parent-array union-find, weighted union, collapsing find, the Ackermann function, counting components |
 | `Chapter17` | Minimum Spanning Trees | Kruskal with `qsort` and union-find, O(n²) Prim, Prim with adjacency lists and a binary min-heap |
-| `Chapter18` | Shortest Paths and Activity Networks | Dijkstra with path printing, Bellman-Ford with negative-cycle detection, Floyd-Warshall, topological sort, AoE network earliest/latest times, slack and critical activities |
+| `Chapter18` | Shortest Paths and Activity Networks | Dijkstra with path printing, Bellman-Ford with negative-cycle detection, Floyd-Warshall, topological sort, AOE network earliest/latest times, slack and critical activities |
 | `Chapter19` | Basic Sorting Algorithms | Common `SWAP` macros and a test program, selection sort, insertion sort and the sentinel version, bubble sort and the early-exit version, counting sort, Shell sort, bucket sort |
 | `Chapter20` | Advanced Sorting Algorithms | Quicksort, quicksort with an explicit stack, median-of-three with a cutoff, `qsort` with `int` and struct comparators, merge sort, linked-list merge sort, heap sort, radix sort on a linked list |
 

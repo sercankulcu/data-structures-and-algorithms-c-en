@@ -18,16 +18,16 @@ struct dnode {
 };
 // invariant: p == p->llink->rlink == p->rlink->llink
 
-// inserts fresh to the right of node p
-void dinsert(dnode_ptr p, dnode_ptr fresh) {
-    fresh->llink = p;
-    fresh->rlink = p->rlink;
-    p->rlink->llink = fresh;
-    p->rlink = fresh;
+// inserts temp to the right of node p
+void dinsert(dnode_ptr p, dnode_ptr temp) {
+    temp->llink = p;
+    temp->rlink = p->rlink;
+    p->rlink->llink = temp;
+    p->rlink = temp;
 }
 
 void ddelete(dnode_ptr header, dnode_ptr p) {
-    if (p == header) {       // never delete the header
+    if (p == header) {       // never delete header
         fprintf(stderr, "Cannot delete header\n");
         return;
     }
